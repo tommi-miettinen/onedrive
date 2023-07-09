@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import imageAPI from "../api/imageAPI";
+import { notify } from "./notificationStore";
 
 interface ImageStore {
   images: any[];
@@ -20,6 +21,7 @@ export const deleteImage = async (imageId: string) => {
   if (!deleted) return;
 
   useImageStore.setState({ images: useImageStore.getState().images.filter((img) => img.id !== imageId) });
+  notify({ type: "success", message: "Kuva poistettu." });
 };
 
 export const uploadImage = async (image: File) => {
@@ -27,5 +29,6 @@ export const uploadImage = async (image: File) => {
   if (!data) return;
 
   fetchImages();
+  notify({ type: "success", message: "Kuva lisätty." });
   return true;
 };

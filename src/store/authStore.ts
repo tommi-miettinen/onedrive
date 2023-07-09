@@ -2,7 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 
 interface AuthStore {
-  user: any;
+  user: User | null;
 }
 
 export const useAuthStore = create<AuthStore>(() => ({
@@ -16,4 +16,16 @@ export const fetchUser = async () => {
   } catch (err) {
     console.log(err);
   }
+};
+
+export const redirectToLogin = () => {
+  window.location.href = "http://localhost:5205/login-microsoft";
+};
+
+export const login = () => {
+  window.location.href = "http://localhost:5205/login-microsoft";
+};
+
+export const logout = () => {
+  window.location.href = "http://localhost:5205/logout";
 };
