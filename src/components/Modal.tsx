@@ -1,43 +1,47 @@
 import ReactDOM from "react-dom";
+import BottomSheet from "./BottomSheet";
+import useWindowSize from "../hooks/useWindowSize";
 
 interface ModalProps {
-  bgDisabled?: boolean;
-  elevation?: number;
-  id: string;
-  isVisible: boolean;
-  toggle: () => void;
+  dismiss: () => void;
+  isOpen: boolean;
   children: JSX.Element | JSX.Element[];
 }
 
-const Modal = ({ isVisible, children, toggle, id, elevation }: ModalProps) => {
+const Modal = ({ children, isOpen, dismiss }: ModalProps) => {
   const handleBgClick = (e: any) => {
-    if (e.target.id === id) toggle();
+    if (e.target.id === "bg") dismiss();
   };
 
-  return isVisible
-    ? ReactDOM.createPortal(
-        <>
-          <div
-            style={{ zIndex: elevation ? 10 * elevation : 10 }}
-            className="fixed top-0 left-0 w-screen min-h-screen bg-black bg-opacity-25"
-          />
-          <div
-            id={id}
-            style={{ zIndex: elevation ? 30 * elevation : 20 }}
-            onClick={handleBgClick}
-            className="flex py-16 flex-col items-center fixed top-0 left-0 w-full h-full overflow-x-hidden outline-none"
-          >
-            <div
-              style={{ zIndex: elevation ? 30 * elevation : 30 }}
-              className="relative m-auto bg-white mx-auto max-w-full flex items-center justify-center rounded-xl"
-            >
-              {children}
-            </div>
-          </div>
-        </>,
-        document.body
-      )
-    : null;
+  if (!isOpen) return null;
+
+  return ReactDOM.createPortal(
+    <>
+      <div className="z-10 fixed top-0 left-0 w-screen min-h-screen bg-black bg-opacity-25" />
+      <div
+        id="bg"
+        onClick={handleBgClick}
+        className="z-20 flex py-16 flex-col items-center fixed top-0 left-0 w-full h-full overflow-x-hidden outline-none"
+      >
+        <div className="z-30 relative m-auto flex flex-col mx-auto max-w-full items-center justify-center overflow-clip">{children}</div>
+      </div>
+    </>,
+    document.body
+  );
 };
 
 export default Modal;
+
+export const ResponsiveModal = ({ isOpen, children, dismiss }: ModalProps) => {
+  const windowSize = useWindowSize();
+
+  return windowSize.width < 640 ? (
+    <BottomSheet isOpen={isOpen} dismiss={dismiss}>
+      {children}
+    </BottomSheet>
+  ) : (
+    <Modal isOpen={isOpen} dismiss={dismiss}>
+      {children}
+    </Modal>
+  );
+};

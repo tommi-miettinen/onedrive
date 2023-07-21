@@ -12,3 +12,9 @@ interface User {
   officeLocation: string | null;
   businessPhones: string[];
 }
+
+interface Image {
+  id: string;
+  "@microsoft.graph.downloadUrl": string;
+  name: string;
+}

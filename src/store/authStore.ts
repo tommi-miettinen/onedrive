@@ -18,14 +18,12 @@ export const fetchUser = async () => {
   }
 };
 
-export const redirectToLogin = () => {
-  window.location.href = "http://localhost:5205/login-microsoft";
-};
+export const redirectToLogin = () => login();
 
 export const login = () => {
-  window.location.href = "http://localhost:5205/login-microsoft";
+  window.location.href = `http://localhost:5205/login-microsoft?redirect=${window.location.origin}`;
 };
 
 export const logout = () => {
-  window.location.href = "http://localhost:5205/logout";
+  window.location.href = `http://localhost:5205/logout?redirect=${window.location.origin}`;
 };

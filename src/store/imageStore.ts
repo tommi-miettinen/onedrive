@@ -4,15 +4,23 @@ import { toast } from "sonner";
 
 interface ImageStore {
   images: any[];
+  loading: boolean;
 }
 
 export const useImageStore = create<ImageStore>(() => ({
   images: [],
+  loading: false,
 }));
 
+export const setLoading = (loading: boolean) => useImageStore.setState({ loading });
+
 export const fetchImages = async () => {
+  setLoading(true);
   const images = await imageAPI.fetchImages();
+  setLoading(false);
+
   if (!images) return;
+
   useImageStore.setState({ images: images.value });
 };
 
@@ -30,15 +38,10 @@ export const uploadImage = async (image: File) => {
   toast.promise(promise, {
     loading: "Lisätään kuvaa...",
     success: () => {
+      //Image is broken after upload so refetching all
       fetchImages();
       return "Kuva lisätty.";
     },
     error: "Kuvan lisääminen epäonnistui.",
   });
-
-  const data = await promise;
-
-  if (!data) return;
-
-  return true;
 };
