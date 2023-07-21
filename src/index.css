@@ -2,28 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Inter Variable";
+  src: url("/fonts/Inter-VariableFont_slnt,wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: oblique -10deg 40deg;
+}
+
 body {
-  overflow: hidden;
-}
-
-.slide {
-  animation: 1s slide-from-left forwards, 1s fade-away 2s forwards;
-}
-
-@keyframes slide-from-left {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0%);
-  }
-}
-
-@keyframes fade-away {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  font-family: "Inter Variable", sans-serif;
 }

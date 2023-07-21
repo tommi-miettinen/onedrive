@@ -9,14 +9,14 @@ const ThumbnailImage = ({ image, onClick }: { image: any; onClick: (image: any) 
     <Fragment>
       <div
         onClick={() => onClick(image)}
-        className="max-h-[250px] overflow-clip flex flex-col m-2 cursor-pointer hover:opacity-80 hover:bg-neutral-100"
+        className="sm:max-h-[180px]  sm:max-w-[180px] rounded overflow-clip flex flex-col cursor-pointer hover:opacity-80 hover:bg-neutral-100"
       >
-        <img className="w-[180px] h-full" src={image["@microsoft.graph.downloadUrl"]} />
+        <img className="w-full bg-black h-full rounded object-cover clip border" src={image["@microsoft.graph.downloadUrl"]} />
 
         <div className="p-2 flex">
           <span className="py-2">{image.name}</span>
           <button
-            className="rounded text-black hover:bg-neutral-200 p-2.5 w-min mt-auto ml-auto"
+            className="rounded text-black  hover:bg-neutral-200 p-2.5 w-min mt-auto ml-auto"
             onClick={(e) => {
               e.stopPropagation();
               setDeleting(true);

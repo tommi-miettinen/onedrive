@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import imageAPI from "../api/imageAPI";
-import { notify } from "./notificationStore";
+import { toast } from "sonner";
 
 interface ImageStore {
   images: any[];
@@ -21,14 +21,24 @@ export const deleteImage = async (imageId: string) => {
   if (!deleted) return;
 
   useImageStore.setState({ images: useImageStore.getState().images.filter((img) => img.id !== imageId) });
-  notify({ type: "success", message: "Kuva poistettu." });
+  toast.success("Kuva poistettu.");
 };
 
 export const uploadImage = async (image: File) => {
-  const data = await imageAPI.uploadImage(image);
+  const promise = imageAPI.uploadImage(image);
+
+  toast.promise(promise, {
+    loading: "Lisätään kuvaa...",
+    success: () => {
+      fetchImages();
+      return "Kuva lisätty.";
+    },
+    error: "Kuvan lisääminen epäonnistui.",
+  });
+
+  const data = await promise;
+
   if (!data) return;
 
-  fetchImages();
-  notify({ type: "success", message: "Kuva lisätty." });
   return true;
 };
