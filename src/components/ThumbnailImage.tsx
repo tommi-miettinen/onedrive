@@ -27,13 +27,7 @@ const ThumbnailImage = ({ url, name, id, onClick }: ThumbnailProps) => {
   return (
     <Fragment>
       <div className="max-w-[240px] w-full relative border rounded overflow-clip">
-        <button
-          onClick={() => onClick({ url, name, id })}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") onClick({ url, name, id });
-          }}
-          className="w-full h-[150px] hover:opacity-80 object-cover cursor-pointer"
-        >
+        <button onClick={() => onClick({ url, name, id })} className="w-full h-[150px] hover:opacity-80 object-cover cursor-pointer">
           <img className="w-full h-[150px] object-cover" src={url} alt={name} />
         </button>
         <div className="flex justify-between items-center bg-white p-2">

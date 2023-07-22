@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 type AvatarProps = {
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   displayLetter: string;
   ariaLabel?: string;
   className?: string;

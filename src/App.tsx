@@ -23,20 +23,23 @@ const App = () => {
   }, []);
 
   return user ? (
-    <div onClick={() => setOptionsVisible(false)} className="h-screen w-screen flex flex-col text-sm overflow-auto">
+    <div onBlur={() => setOptionsVisible(false)} className="h-screen w-screen flex flex-col text-sm overflow-auto">
       <Toaster duration={2000} />
       <div className="flex items-center p-4 border-b sticky top-0 w-full bg-white z-10">
         <div>
           <div className="flex items-center">
             <Avatar
               aria-label={`Avatar for ${user.displayName}, click to open options`}
-              onClick={() => setOptionsVisible((p) => (p ? false : true))}
+              onClick={(e) => {
+                e.stopPropagation();
+                setOptionsVisible((p) => !p);
+              }}
               displayLetter={user.displayName[0]}
             />
             <span className="ml-2 text-sm">{user.displayName}</span>
           </div>
           {optionsVisible && (
-            <div className="bg-white rounded absolute  border mt-2 overflow-clip z-10">
+            <div className="bg-white rounded absolute border mt-2 overflow-clip z-10">
               <button
                 onKeyDown={(e) => e.key === "Enter" && logout()}
                 onClick={logout}
