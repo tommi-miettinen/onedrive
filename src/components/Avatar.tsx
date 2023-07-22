@@ -8,13 +8,7 @@ type AvatarProps = {
 };
 
 const Avatar = ({ className, onClick, displayLetter, ariaLabel }: AvatarProps) => (
-  <div
-    tabIndex={0}
-    onKeyDown={(event) => {
-      if (event.key === "Enter" && onClick) {
-        onClick();
-      }
-    }}
+  <button
     aria-label={ariaLabel}
     onClick={onClick}
     className={twMerge(
@@ -23,7 +17,7 @@ const Avatar = ({ className, onClick, displayLetter, ariaLabel }: AvatarProps) =
     )}
   >
     {displayLetter}
-  </div>
+  </button>
 );
 
 export default Avatar;

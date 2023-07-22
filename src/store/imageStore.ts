@@ -3,7 +3,7 @@ import imageAPI from "../api/imageAPI";
 import { toast } from "sonner";
 
 interface ImageStore {
-  images: any[];
+  images: Image[];
   loading: boolean;
 }
 
@@ -21,7 +21,7 @@ export const fetchImages = async () => {
 
   if (!images) return;
 
-  useImageStore.setState({ images: images.value });
+  useImageStore.setState({ images });
 };
 
 export const deleteImage = async (imageId: string) => {
@@ -35,7 +35,7 @@ export const deleteImage = async (imageId: string) => {
 export const uploadImage = async (image: File) => {
   const promise = imageAPI.uploadImage(image);
 
-  toast.promise(promise, {
+  void toast.promise(promise, {
     loading: "Lisätään kuvaa...",
     success: () => {
       //Image is broken after upload so refetching all

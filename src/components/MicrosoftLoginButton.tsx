@@ -1,11 +1,11 @@
-const MicrosoftLoginButton = ({ onClick }: { onClick: any }) => {
+interface MicrosoftLoginButtonProps {
+  onClick: (event: React.MouseEvent<HTMLButtonElement> | React.KeyboardEvent<HTMLButtonElement>) => void;
+}
+
+const MicrosoftLoginButton = ({ onClick }: MicrosoftLoginButtonProps) => {
   return (
     <button
-      onKeyDown={(event) => {
-        if (event.key === "Enter") {
-          onClick;
-        }
-      }}
+      onKeyDown={(e) => e.key === "Enter" && onClick(e)}
       onClick={onClick}
       className="flex px-5 py-2.5 items-center bg-black text-white rounded hover:bg-opacity-80"
     >

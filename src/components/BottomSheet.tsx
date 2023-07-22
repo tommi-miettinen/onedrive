@@ -1,13 +1,24 @@
 import Sheet from "react-modal-sheet";
+import FocusTrap from "focus-trap-react";
 
-const BottomSheet = ({ isOpen, dismiss, children }: { isOpen: boolean; dismiss: () => void; children: JSX.Element | JSX.Element[] }) => {
+interface BottomSheetProps {
+  isOpen: boolean;
+  dismiss: () => void;
+  children: JSX.Element | JSX.Element[];
+}
+
+const BottomSheet = ({ isOpen, dismiss, children }: BottomSheetProps) => {
   return (
     <Sheet detent="content-height" isOpen={isOpen} onClose={dismiss} onCloseEnd={dismiss}>
-      <Sheet.Container>
-        <Sheet.Header />
-        <Sheet.Scroller>{children}</Sheet.Scroller>
-      </Sheet.Container>
-      <Sheet.Backdrop onTap={dismiss} />
+      <FocusTrap>
+        <div>
+          <Sheet.Container>
+            <Sheet.Header />
+            <Sheet.Scroller>{children}</Sheet.Scroller>
+          </Sheet.Container>
+          <Sheet.Backdrop onTap={dismiss} />
+        </div>
+      </FocusTrap>
     </Sheet>
   );
 };

@@ -1,14 +1,22 @@
 import axios from "axios";
 
-const baseUrl = "http://localhost:5205";
+const baseUrl = import.meta.env.VITE_APP_BASE_URL as string;
 
-const fetchImages = async () => {
+interface ImageResponse {
+  value: Image[];
+}
+
+interface SingleImageResponse {
+  value: Image;
+}
+
+const fetchImages = async (): Promise<Image[] | undefined> => {
   try {
-    const res = await axios.get(`${baseUrl}/images`, {
+    const res = await axios.get<ImageResponse>(`${baseUrl}/images`, {
       withCredentials: true,
     });
 
-    return res.data;
+    return res.data.value;
   } catch (err) {
     console.log(err);
   }
@@ -26,19 +34,19 @@ const deleteImage = async (imageId: string) => {
   }
 };
 
-const uploadImage = async (image: File) => {
+const uploadImage = async (image: File): Promise<Image | undefined> => {
   try {
     const formData = new FormData();
     formData.append("file", image);
 
-    const res = await axios.post(`${baseUrl}/images`, formData, {
+    const res = await axios.post<SingleImageResponse>(`${baseUrl}/images`, formData, {
       withCredentials: true,
       headers: {
         "Content-Type": "multipart/form-data",
       },
     });
 
-    return res.data;
+    return res.data.value;
   } catch (err) {
     console.log(err);
   }

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 interface FileUploaderProps {
-  upload: (file: File) => any;
+  upload: (file: File) => Promise<void> | void;
   className?: string;
   children: JSX.Element | JSX.Element[];
 }
@@ -9,23 +9,17 @@ interface FileUploaderProps {
 const FileUploader = ({ upload, className, children }: FileUploaderProps) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && (e.target.files[0] as File);
-    if (file) {
-      try {
-        upload(file);
-      } catch (err) {}
-    }
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+
+    void upload(file);
   };
 
   return (
     <div
       tabIndex={0}
-      onKeyDown={(event) => {
-        if (event.key === "Enter") {
-          fileInputRef.current?.click();
-        }
-      }}
+      onKeyDown={(e) => e.key === "Enter" && fileInputRef.current?.click()}
       aria-label="Upload file"
       role="button"
       className={className}

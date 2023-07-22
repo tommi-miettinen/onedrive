@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useImageStore, fetchImages, uploadImage } from "./store/imageStore";
 import FileUploader from "./components/FileUploader";
 import { fetchUser, useAuthStore, logout, login } from "./store/authStore";
@@ -16,46 +16,34 @@ const App = () => {
 
   const [selectedImage, setSelectedImage] = useState("");
   const [optionsVisible, setOptionsVisible] = useState(false);
-  const optionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetchUser();
-    fetchImages();
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (e: any) => {
-      if (optionsRef.current && !optionsRef.current.contains(e.target)) setOptionsVisible(false);
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    void fetchUser();
+    void fetchImages();
   }, []);
 
   return user ? (
-    <div className="h-screen w-screen flex flex-col text-sm overflow-auto">
+    <div onClick={() => setOptionsVisible(false)} className="h-screen w-screen flex flex-col text-sm overflow-auto">
       <Toaster duration={2000} />
       <div className="flex items-center p-4 border-b sticky top-0 w-full bg-white z-10">
         <div>
           <div className="flex items-center">
             <Avatar
               aria-label={`Avatar for ${user.displayName}, click to open options`}
-              onClick={() => setOptionsVisible((p) => !p)}
+              onClick={() => setOptionsVisible((p) => (p ? false : true))}
               displayLetter={user.displayName[0]}
             />
             <span className="ml-2 text-sm">{user.displayName}</span>
           </div>
           {optionsVisible && (
-            <div ref={optionsRef} className="bg-white rounded absolute  border mt-2 overflow-clip z-10">
-              <nav
-                tabIndex={0}
+            <div className="bg-white rounded absolute  border mt-2 overflow-clip z-10">
+              <button
                 onKeyDown={(e) => e.key === "Enter" && logout()}
                 onClick={logout}
                 className="rounded py-2.5 px-5 focus:bg-neutral-100 hover:bg-neutral-100 text-sm"
               >
                 Kirjaudu ulos
-              </nav>
+              </button>
             </div>
           )}
         </div>
@@ -83,7 +71,7 @@ const App = () => {
         </div>
       )}
       <Modal isOpen={Boolean(selectedImage)} dismiss={() => setSelectedImage("")}>
-        <img className="max-w-[80vw] max-h-[80vh]" src={selectedImage} />
+        <img className="max-w-[80vw] max-h-[80vh] object-contain" src={selectedImage} alt="Selected" />
       </Modal>
     </div>
   ) : (
